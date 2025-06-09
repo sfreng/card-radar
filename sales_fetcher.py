@@ -2,7 +2,7 @@ import requests
 import pandas as pd
 from datetime import datetime, timedelta
 import streamlit as st
-
+from urllib.parse import quote
 import base64
 
 def get_ebay_access_token(client_id, client_secret):
@@ -38,13 +38,19 @@ def fetch_ebay_sales(player_name, access_token):
 
     days_back = 90
     date_from = (datetime.utcnow() - timedelta(days=days_back)).strftime('%Y-%m-%dT%H:%M:%SZ')
+
+    # Codifica sicura del nome
+    search_query = quote(player_name.lower())
+
     url = (
         f"https://api.ebay.com/buy/marketplace_insights/v1/item_sales/search?"
-        f"q={player_name}&filter=transactionDate:[{date_from}..]"
+        f"q={search_query}&filter=transactionDate:[{date_from}..]"
     )
 
     response = requests.get(url, headers=headers)
+
     if response.status_code != 200:
+        st.warning(f"⚠️ Nessun risultato per {player_name} (Errore {response.status_code})")
         return []
     
     data = response.json()
