@@ -15,8 +15,8 @@ def get_ebay_access_token(client_id, client_secret):
     }
     response = requests.post(url, headers=headers, data=data)
     if response.status_code != 200:
-    st.error(f"❌ Errore API eBay: {response.status_code} – {response.text}")
-    st.stop()
+        st.error(f"❌ Errore API eBay: {response.status_code} – {response.text}")
+        st.stop()
 
     return response.json()["access_token"]
 
