@@ -39,8 +39,12 @@ def fetch_ebay_sales(player_name, access_token):
     days_back = 90
     date_from = (datetime.utcnow() - timedelta(days=days_back)).strftime('%Y-%m-%dT%H:%M:%SZ')
 
-    # Codifica sicura del nome
-    search_query = quote(player_name.lower())
+    # Parole chiave per ampliare la ricerca
+    keywords = ["auto", "autograph", "/1", "/5", "/10", "/15", "/25", "/35", "/49", "/50", "/75", "/99", "/100", "/150", "/199", "psa", "refractor", "mojo", "xfractor", "gold", "green", "blue", "red", "cracked ice", "silver"]
+
+    # Costruisci una query "ampia" per ogni giocatore
+    keyword_string = " ".join(keywords)
+    search_query = quote(f"{player_name.lower()} {keyword_string}")
 
     url = (
         f"https://api.ebay.com/buy/marketplace_insights/v1/item_sales/search?"
@@ -65,3 +69,4 @@ def fetch_ebay_sales(player_name, access_token):
             "Link": item["itemAffiliateWebUrl"]
         })
     return results
+
