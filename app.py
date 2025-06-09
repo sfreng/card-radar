@@ -9,6 +9,7 @@ st.title("📊 Card Radar – Vendite eBay concluse")
 # Leggi chiavi dal secrets.toml
 CLIENT_ID = st.secrets["EBAY_CLIENT_ID"]
 CLIENT_SECRET = st.secrets["EBAY_CLIENT_SECRET"]
+st.write("Client ID:", CLIENT_ID[:10])  # Debug visivo temporaneo
 
 # Carica wishlist
 with open("wishlist_updated.txt", "r") as f:
