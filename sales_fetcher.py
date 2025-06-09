@@ -3,17 +3,27 @@ import pandas as pd
 from datetime import datetime, timedelta
 import streamlit as st
 
+import base64
+
 def get_ebay_access_token(client_id, client_secret):
     url = "https://api.ebay.com/identity/v1/oauth2/token"
+
+    # Genera manualmente la stringa base64
+    credentials = f"{client_id}:{client_secret}".encode("utf-8")
+    encoded_credentials = base64.b64encode(credentials).decode("utf-8")
+
     headers = {
         "Content-Type": "application/x-www-form-urlencoded",
-        "Authorization": f"Basic {requests.auth._basic_auth_str(client_id, client_secret)}"
+        "Authorization": f"Basic {encoded_credentials}"
     }
+
     data = {
         "grant_type": "client_credentials",
         "scope": "https://api.ebay.com/oauth/api_scope"
     }
+
     response = requests.post(url, headers=headers, data=data)
+
     if response.status_code != 200:
         st.error(f"❌ Errore API eBay: {response.status_code} – {response.text}")
         st.stop()
