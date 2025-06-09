@@ -14,7 +14,10 @@ def get_ebay_access_token(client_id, client_secret):
         "scope": "https://api.ebay.com/oauth/api_scope"
     }
     response = requests.post(url, headers=headers, data=data)
-    response.raise_for_status()
+    if response.status_code != 200:
+    st.error(f"❌ Errore API eBay: {response.status_code} – {response.text}")
+    st.stop()
+
     return response.json()["access_token"]
 
 def fetch_ebay_sales(player_name, access_token):
